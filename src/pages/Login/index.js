@@ -18,10 +18,19 @@ export default function Login() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-          email: data.get('email'),
-          password: data.get('password'),
-        });
+        fetch('http://localhost:9090/api/v1/auth/login',{
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username: data.get('username'),
+              password: data.get('password'),
+            }),
+        }).then(data=> data.json())
+        .then(data=>{
+          console.log(data);
+        })   
       };
     return(
         <ThemeProvider theme={theme}>
@@ -46,10 +55,9 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="User Name"
+              name="username"            
               autoFocus
             />
             <TextField

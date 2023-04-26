@@ -12,16 +12,28 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import {useNavigate} from 'react-router-dom';
 const theme = createTheme();
+
 export default function Register() {
+  const navigate = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-          email: data.get('email'),
-          password: data.get('password'),
-        });
+        fetch('http://localhost:9090/api/v1/auth/register',{
+           method: 'POST',
+           headers: {
+            'Content-Type': 'application/json',
+           },
+           body: JSON.stringify({
+            email: data.get('email'),
+            password: data.get('password'),
+            repassowrd: data.get('repassword'),
+            username: data.get('username'),
+           })
+        }).then(()=>{
+            navigate.call(null,"/login");
+        });       
       };
     return(
         <ThemeProvider theme={theme}>
@@ -43,27 +55,17 @@ export default function Register() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="username"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="username"
+                  label="User Name"
                   autoFocus
                 />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
+              </Grid>              
               <Grid item xs={12}>
                 <TextField
                   required
@@ -83,6 +85,17 @@ export default function Register() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="repassword"
+                  label="RePassword"
+                  type="password"
+                  id="repassword" 
+                  autoComplete="new-password"             
                 />
               </Grid>
               <Grid item xs={12}>
