@@ -15,37 +15,101 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router-dom';
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Label } from "@mui/icons-material";
+import Post from '../../components/Post';
 const theme = createTheme();
-export default function Home() {
 
-    
+export default function Home() {
+    const [profile, setProfile] = React.useState({
+        name: '',
+        username: '',
+        avatar: '',
+        about: '',
+    });
+
+    const [postList, setPostList] = React.useState([
+        {
+            username:'Muhammet',
+            sharedtime: '2 hours ago',
+        },
+        {
+            
+            username:'Deniz',
+            sharedtime: '3 hours ago',
+        },
+        {
+            
+            username:'Bahar',
+            sharedtime: '3 hours ago',
+        },
+        {
+            
+            username:'Kenan',
+            sharedtime: '4 hours ago',
+        },
+        {
+            
+            username:'Hakkı',
+            sharedtime: '12 hours ago',
+        },
+        {
+            
+            username:'Gülşah',
+            sharedtime: '13 hours ago',
+        },
+        {
+            
+            username:'Zeynep',
+            sharedtime: '21 hours ago',
+        },
+
+    ]);
+
+    React.useEffect(()=>{
+        fetch('http://localhost:9093/api/v1/userprofile/getmyprofile',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                token: localStorage.getItem('token'),
+            }),
+        }).then(data=> data.json())
+        .then(data=>{
+            setProfile(data);
+        })
+    },[]);
 
     return(
         <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xl" sx={{
-            flexDirection: 'row', 
-            alignItems:'center', justifyContent: 'center'}}>
-          <CssBaseline />
-          
+        <Container component="main" maxWidth="xl" >
+          <CssBaseline />          
             <Grid2 container sx={{
                 marginTop: 8,
             }}>
+                
                 <Grid2 item xs={2} sx={{
                     backgroundColor: '#E8A0BF',
                     height: '80vh',
                     marginRight: '10px',
                     borderRadius: '10px',  
-                    paddingTop: 3,                 
+                    paddingTop: 3,                                           
+
                 }} >
-                   <Avatar
-                    alt="Remy Sharp"
-                    src="https://randomuser.me/api/portraits/men/96.jpg"
-                    sx={{ width: 100, height: 100 }}
-                    />
-                    <label>Muhammet Hoca</label> <br />
-                    <label>muhammethoca</label> <br />
-                    <label>ankara</label> <br />
-                    <label>bilgiler bilgiler bilgiler bilgiler</label> <br />
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
+                        <Avatar
+                        alt={profile.name}
+                        src={profile.avatar}                    
+                        sx={{ width: 100, height: 100}}
+                        />
+                        <label>{profile.name}</label> 
+                        <label>{profile.username}</label>
+                        <label>{profile.about}</label>
+                    </Box>
                     
                 </Grid2>
                 <Grid2 item xs={4} sx={{
@@ -53,7 +117,24 @@ export default function Home() {
                     height: '80vh',
                     marginRight: '10px',
                     borderRadius: '10px',
+                    overflow: 'scroll',
+                    
                 }}>
+                     <Box sx={{                    
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                  
+                    }}>
+                        {
+                            postList.map((post)=>(
+                                <Post item={post}/>
+                            ))
+                        }
+                       
+                       
+                    </Box>
                 </Grid2>
                 <Grid2 item xs={2}  sx={{
                     backgroundColor: '#E8A0BF',

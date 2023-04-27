@@ -12,9 +12,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {useNavigate} from 'react-router-dom';
 const theme = createTheme();
 export default function Login() {
-    
+    const navigate = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -30,6 +31,10 @@ export default function Login() {
         }).then(data=> data.json())
         .then(data=>{
           console.log(data);
+           if(data.statusCode === 2001){
+              localStorage.setItem('token',data.message)
+              navigate.call(null,'/')
+           }
         })   
       };
     return(
