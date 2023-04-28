@@ -14,7 +14,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 
 export default function RecipeReviewCard(props) {
- 
+ const [imageNumber, setImageNumber] = React.useState(0);
   return (
     <Card sx={{ margin: 1 }}>
       <CardHeader
@@ -35,11 +35,39 @@ export default function RecipeReviewCard(props) {
         image={
           props.item.posturls === undefined
           ? 'https://www.biofin.org/sites/default/files/content/news_media/Screen%20Shot%202022-04-19%20at%2010.17.50%20PM.png'
-          : props.item.posturls[0]
+          : props.item.posturls[imageNumber]
 
         }
         alt="Paella dish"
       />
+      <div>     
+      <button
+      onClick={()=>{
+        setImageNumber(0);
+      }}
+      style={{
+         borderWidth: 0,
+        backgroundColor: 'green',
+        width: 16,
+        height: 16,
+        borderRadius: 8,       
+        margin: 5,        
+        marginLeft: '40%'
+      }} />
+      <button
+       onClick={()=>{
+        setImageNumber(1);
+      }}
+      style={{
+        borderWidth: 0,
+        backgroundColor: 'red',
+        width: 16,
+        height: 16,
+        borderRadius: 8,       
+        margin: 5,        
+        marginLeft: 10
+      }} />
+      </div>
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {
