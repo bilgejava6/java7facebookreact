@@ -26,43 +26,7 @@ export default function Home() {
         about: '',
     });
 
-    const [postList, setPostList] = React.useState([
-        {
-            username:'Muhammet',
-            sharedtime: '2 hours ago',
-        },
-        {
-            
-            username:'Deniz',
-            sharedtime: '3 hours ago',
-        },
-        {
-            
-            username:'Bahar',
-            sharedtime: '3 hours ago',
-        },
-        {
-            
-            username:'Kenan',
-            sharedtime: '4 hours ago',
-        },
-        {
-            
-            username:'Hakkı',
-            sharedtime: '12 hours ago',
-        },
-        {
-            
-            username:'Gülşah',
-            sharedtime: '13 hours ago',
-        },
-        {
-            
-            username:'Zeynep',
-            sharedtime: '21 hours ago',
-        },
-
-    ]);
+    const [postList, setPostList] = React.useState([]);
 
     React.useEffect(()=>{
         fetch('http://localhost:9093/api/v1/userprofile/getmyprofile',{
@@ -76,7 +40,19 @@ export default function Home() {
         }).then(data=> data.json())
         .then(data=>{
             setProfile(data);
-        })
+        });
+        fetch('http://localhost:9092/post/getposts',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                token: localStorage.getItem('token'),
+            }),
+        }).then(data=> data.json())
+        .then(data=>{
+            setPostList(data);
+        });
     },[]);
 
     return(
@@ -128,8 +104,8 @@ export default function Home() {
                   
                     }}>
                         {
-                            postList.map((post)=>(
-                                <Post item={post}/>
+                            postList.map((post,index)=>(
+                                <Post item={post} key={index}/>
                             ))
                         }
                        

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -20,9 +19,7 @@ export default function RecipeReviewCard(props) {
     <Card sx={{ margin: 1 }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <Avatar alt="profil avatar" src={props.item.useravatar} />
         }
         action={
           <IconButton aria-label="settings">
@@ -35,14 +32,21 @@ export default function RecipeReviewCard(props) {
       <CardMedia
         component="img"
         height="194"
-        image="https://images.template.net/wp-content/uploads/2016/04/27043339/Nature-Wallpaper1.jpg"
+        image={
+          props.item.posturls === undefined
+          ? 'https://www.biofin.org/sites/default/files/content/news_media/Screen%20Shot%202022-04-19%20at%2010.17.50%20PM.png'
+          : props.item.posturls[0]
+
+        }
         alt="Paella dish"
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
+          {
+            props.item.posttext === undefined
+            ? 'No description No descriptionNo descriptionNo descriptionNo descriptionNo descriptionNo descriptionNo descriptionNo descriptionNo descriptionNo descriptionNo descriptionNo descriptionNo descriptionNo descriptionNo description'
+            : props.item.posttext
+          }
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
